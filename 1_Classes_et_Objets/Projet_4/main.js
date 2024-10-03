@@ -7,7 +7,7 @@ const height = window.innerHeight;
 const app = new App('P4');
 app.createCanvas(width, height);
 
-const grid = new Grid(width/4,height/4,width/2,height/2,10,10,1);
+const grid = new Grid(width/4,height/4,width/2,height/2,5,5,1);
 grid.build();
 
 grid.shuffle();
