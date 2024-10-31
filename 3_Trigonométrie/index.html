@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+      }
+      h1 {
+        top:90%;
+        position: fixed;
+        z-index: 2;
+        text-align: center;
+        font-family: sans-serif;
+        color: #333;
+      }
+      canvas {
+        z-index: 0;
+        border: 1px solid #333;
+        position: fixed;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="instruction">Tirer sur les fils pour interagir avec la forme présente sur l'écran</h1>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
