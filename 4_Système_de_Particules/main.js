@@ -5,6 +5,8 @@ const ctx = canvas.getContext('2d');
 const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerHeight;
 
+const instructions = document.getElementById('instructions');
+
 class svgShape{
     constructor(path,x,y){
         this.path = path;
@@ -169,6 +171,18 @@ function createParticles(points,num,x,y){
 
 function animate(){
     ctx.clearRect(0, 0, width, height);
+
+    if(keyIsDown && mouseIsDown){
+        console.log('key is down');
+        particles.forEach((p) => {
+            let distance = Math.sqrt((p.pos.x - mousePos.x) * (p.pos.x - mousePos.x) + (p.pos.y - mousePos.y) * (p.pos.y - mousePos.y));
+            if(distance < 100){
+                p.a = p.a.add(new Vector((p.pos.x - mousePos.x) * 0.0001, (p.pos.y - mousePos.y) * 0.0001).mult(1000));
+            }
+        });
+    }
+        
+    if(!keyIsDown){
     if(generate && insidePoints.length > 0){
         for(let i = 0; i < 10; i++){
             particles = particles.concat(createParticles(insidePoints, 10,mousePos.x,mousePos.y));
@@ -179,6 +193,8 @@ function animate(){
         }
        
     }
+}
+
     particles.forEach((p,i) => {
 
         p.update();
@@ -191,9 +207,12 @@ function animate(){
 }
 
 let generate = false;
+let mouseIsDown = false;
 let mousePos = new Vector(0, 0);
 
 document.addEventListener('mousedown', (e) => {
+    instructions.style.display = 'none';
+    mouseIsDown = true;
     generate = true;
     mousePos = new Vector(e.clientX, e.clientY);
 });
@@ -203,7 +222,17 @@ document.addEventListener('mousemove', (e) => {
 });
 
 document.addEventListener('mouseup', (e) => {
+    mouseIsDown = false;
     generate = false;
+});
+
+document.addEventListener('keydown', (e) => {
+    instructions.style.display = 'none';
+        keyIsDown = true;
+});
+
+document.addEventListener('keyup', (e) => {
+    keyIsDown = false;
 });
 
 let shape = 1;
@@ -255,7 +284,7 @@ function buildShape(){
 
 }
 
-
+let keyIsDown = false;
 
 let insidePoints = [];
 
@@ -264,6 +293,7 @@ let particles = [];
 buildShape()
 
 animate();
+
 
 
 
