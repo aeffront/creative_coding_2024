@@ -1,0 +1,19 @@
+#inputs{
+  position : fixed;
+  z-index: 1;
+  background-color: white;
+  padding: 1%;
+  border: 1px solid black;
+  margin: 1%;
+}
+
+input  {
+  color: red;
+}
+
+.drawCanvas{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
