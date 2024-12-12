@@ -29,7 +29,7 @@ class Webcam {
     
     this.currentFrame = null;
     
-    navigator.mediaDevices.getUserMedia({ video: true })
+    navigator.mediaDevices.getUserMedia({ video: {width: this.drawCanvas.width, height: this.drawCanvas.height}})
       .then(stream => {
         this.video.srcObject = stream;
       })
