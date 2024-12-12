@@ -5,9 +5,35 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
+    <style>
+      canvas{
+        width: 100%;
+        height: 100%;
+        display: block;
+        position :fixed;
+        top: 0;
+        left: 0;
+      }
+      body{
+        display : flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        
+      }
+      h1{
+        z-index: 100;
+      }
+    </style>
   </head>
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
+    <h1>Click to run</h1>
+    <script>
+      document.body.addEventListener('click', () => {
+        document.querySelector('h1').style.display = 'none';
+      })
+    </script>
   </body>
 </html>
