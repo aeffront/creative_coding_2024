@@ -1,5 +1,5 @@
 {
-  "name": "visualize",
+  "name": "3d-viz",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,5 +10,8 @@
   },
   "devDependencies": {
     "vite": "^6.0.1"
+  },
+  "dependencies": {
+    "three": "^0.171.0"
   }
 }
