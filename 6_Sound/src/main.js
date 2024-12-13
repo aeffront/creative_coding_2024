@@ -80,7 +80,7 @@ function updateGrid(){
 
 }
 
-let drawLines = false;
+let drawLines = true;
 
 
 function drawAscii(){
@@ -145,9 +145,9 @@ camera.position.z = 5;
 
 function animate() {
 
-  if(Math.random() > 0.9){
-    drawLines = !drawLines;
-  }
+  // if(Math.random() > 0.9){
+  //   drawLines = !drawLines;
+  // }
   
 
   
@@ -195,10 +195,15 @@ function setup(){
   });
 
   document.removeEventListener('click', setup);
+  document.addEventListener('mousedown', () => {
+    drawLines = false;});
+  document.addEventListener('mouseup', () => {
+    drawLines = true;});
 }
 
 
 document.addEventListener('click',setup);
+
 
 
 

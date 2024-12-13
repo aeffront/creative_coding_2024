@@ -29,10 +29,10 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
-    <h1>Click to run</h1>
+    <h2 style="text-align: center;z-index: 100; user-select: none;">Click to run</h2>
     <script>
       document.body.addEventListener('click', () => {
-        document.querySelector('h1').style.display = 'none';
+        document.querySelector('h2').innerHTML = 'Mouse Down : ASCII <br> Mouse Up : 3D';
       })
     </script>
   </body>
