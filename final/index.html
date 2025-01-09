@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Face Detection with Mediapipe</title>
+  <script src="node_modules/@mediapipe/face_detection/face_detection.js"></script>
+  <script src="node_modules/@mediapipe/camera_utils/camera_utils.js"></script>
+  <script src="node_modules/@mediapipe/hands/hands.js"></script>
+  <style>
+    #canvas{
+      position: fixed;
+    }
+    #sliderContainer{
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+  <video id="webcam" autoplay muted style="display: none;"></video>
+  <canvas id="outputCanvas" style="display: none;"></canvas>
+
+
+
+  <script>
+    let MP_data;
+    let Hands_data;
+    let BD_box;
+
+    const videoElement = document.getElementById('webcam');
+    const canvasElement = document.getElementById('outputCanvas');
+    const canvasCtx = canvasElement.getContext('2d');
+
+    // Create a temporary canvas for flipping the video feed
+    const tempCanvas = document.createElement('canvas');
+    const tempCtx = tempCanvas.getContext('2d');
+
+    // Initialize Mediapipe Face Detection
+    const faceDetection = new FaceDetection({
+      locateFile: (file) => `node_modules/@mediapipe/face_detection/${file}`
+    });
+
+    faceDetection.setOptions({
+      model: 'short', // 'short' or 'full'
+      minDetectionConfidence: 0.5,
+      minTrackingConfidence: 0.5
+      
+    });
+
+    faceDetection.onResults((results) => {
+      MP_data = results;
+      // Draw the results on the canvas
+      canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+      canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+
+      if (results.detections) {
+        for (const detection of results.detections) {
+          const boundingBox = detection.boundingBox;
+          BD_box = detection.boundingBox;
+          
+
+          // Draw bounding box
+          canvasCtx.beginPath();
+          canvasCtx.rect(
+            boundingBox.xCenter * canvasElement.width - boundingBox.width * canvasElement.width / 2,
+            boundingBox.yCenter * canvasElement.height - boundingBox.height * canvasElement.height / 2,
+            boundingBox.width * canvasElement.width,
+            boundingBox.height * canvasElement.height
+          );
+          canvasCtx.strokeStyle = 'blue';
+          canvasCtx.lineWidth = 2;
+          //canvasCtx.stroke();
+        }
+      }
+    });
+
+
+    // Initialize Mediapipe Hands
+    const hands = new Hands({
+      locateFile: (file) => `node_modules/@mediapipe/hands/${file}`
+    });
+
+    hands.setOptions({
+      modelComplexity: 0, // Use lite model
+      maxNumHands: 1,
+      minDetectionConfidence: 0.7,
+      minTrackingConfidence: 0.9
+    });
+
+    hands.onResults((results) => {
+      Hands_data = results;
+
+
+      
+    });
+
+    // Ensure WebAssembly module is loaded before starting the camera
+    hands.initialize().then(() => {
+      // Start the webcam feed
+      const camera = new Camera(videoElement, {
+        onFrame: async () => {
+          // Draw the flipped video frame onto the temporary canvas
+          tempCanvas.width = videoElement.videoWidth;
+          tempCanvas.height = videoElement.videoHeight;
+          tempCtx.save();
+          tempCtx.scale(-1, 1);
+          tempCtx.drawImage(videoElement, -videoElement.videoWidth, 0, videoElement.videoWidth, videoElement.videoHeight);
+          tempCtx.restore();
+
+          // Send the flipped frame to Mediapipe
+          await faceDetection.send({ image: tempCanvas });
+          await hands.send({ image: tempCanvas });
+        },
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+      camera.start();
+      canvasElement.width = window.innerWidth;
+      canvasElement.height = window.innerHeight;
+    }).catch((error) => {
+      console.error('Failed to initialize hands:', error);
+    });
+  </script>
+
+<script src="src/main.js"></script>
+
+</body>
+</html>

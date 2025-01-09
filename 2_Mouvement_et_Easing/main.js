@@ -65,15 +65,21 @@ class ball{
   
   draw(){
     ctx.fillStyle = this.color;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, Math.abs(this.size), 0, Math.PI * 2);
-    ctx.fill();
+    
+    let char = "@";
+    ctx.font = Math.abs(this.size)+"px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(char, this.x, this.y);
+    // ctx.beginPath();
+    // ctx.arc(this.x, this.y, Math.abs(this.size), 0, Math.PI * 2);
+    // ctx.fill();
   }
 
 }
 
 let balls = [];
-for(let i=0; i<1000; i++){
+for(let i=0; i<500; i++){
   balls.push(new ball());
 }
 
