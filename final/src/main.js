@@ -10,7 +10,7 @@ document.body.appendChild(sliderContainer);
 let sliderX = document.createElement("input");
 sliderX.type = "range";
 sliderX.min = 1;
-sliderX.max = 100;
+sliderX.max = 200;
 sliderX.value = 10;
 
 
@@ -21,7 +21,7 @@ sliderX.addEventListener("input", function(){
 let sliderY = document.createElement("input");
 sliderY.type = "range";
 sliderY.min = 1;
-sliderY.max = 100;
+sliderY.max = 200;
 sliderY.value = 10;
 
 
@@ -79,8 +79,8 @@ function loop(){
   
 
   if(BD_box){
-    let width = size*200;
-    let height = 200*size;
+    let width = size*BD_box.width*canvas.width;
+    let height = size*BD_box.height*canvas.height;
     let x = BD_box.xCenter*canvas.width-width/2;
     let y = BD_box.yCenter*canvas.height-height/2;
     ctx.fillStyle = "white"
